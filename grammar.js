@@ -234,6 +234,8 @@ module.exports = grammar({
             $.compile_options_attribute,
             $.feature_attribute,
             $.file_attribute,
+            $.doc_attribute,
+            $.moduledoc_attribute,
             $.deprecated_attribute,
             $.record_decl,
             $.type_alias,
@@ -375,6 +377,26 @@ module.exports = grammar({
             field("original_file", $.string), ',',
             field("original_line", $.integer),
             ')', '.'),
+
+        // OTP 27+ documentation attributes
+        // Supports: -doc "string". / -doc("string"). / -doc hidden. / -doc(hidden).
+        doc_attribute: $ => prec(PREC.ATTR_NAME, seq(
+            '-', atom_const('doc'),
+            choice(
+                seq('(', field("content", $._expr), ')'),
+                field("content", $._expr)
+            ),
+            '.'
+        )),
+
+        moduledoc_attribute: $ => prec(PREC.ATTR_NAME, seq(
+            '-', atom_const('moduledoc'),
+            choice(
+                seq('(', field("content", $._expr), ')'),
+                field("content", $._expr)
+            ),
+            '.'
+        )),
 
         deprecated_attribute: $ => seq(
             '-',

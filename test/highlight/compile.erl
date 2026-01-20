@@ -111,7 +111,7 @@ file(File, Opts) when is_list(Opts) ->
 %     ^ variable
 %           ^ variable
 %                 ^ keyword
-%                       ^ function
+%                       ^ function.builtin
 %                              ^ variable
     do_compile({file,File}, Opts++env_default_opts());
 %    ^ function

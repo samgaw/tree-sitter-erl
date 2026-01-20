@@ -28,8 +28,13 @@
 (string) @string
 (char) @constant
 (integer) @number
+(float) @number.float
 (var) @variable
 (atom) @string.special.symbol
+
+;; Language constants (must come after atom to override)
+((atom) @constant.builtin
+  (#any-of? @constant.builtin "true" "false" "undefined"))
 
 ;;; Comments
 ((var) @comment.discard
@@ -49,6 +54,18 @@
 ;; This is a fudge, we should check that the operator is '/'
 ;; But our grammar does not (currently) provide it
 (binary_op_expr lhs: (atom) @function rhs: (integer))
+
+;; Built-in functions (BIFs) - guard-safe functions and common BIFs
+;; Must come after general function rules since last match wins
+(call expr: (atom) @function.builtin
+  (#any-of? @function.builtin
+    ;; Type checking
+    "is_atom" "is_binary" "is_bitstring" "is_boolean" "is_float"
+    "is_function" "is_integer" "is_list" "is_map" "is_map_key"
+    "is_number" "is_pid" "is_port" "is_reference" "is_tuple"
+    ;; Guard-safe BIFs
+    "abs" "bit_size" "byte_size" "element" "hd" "length"
+    "map_size" "node" "round" "self" "size" "tl" "trunc" "tuple_size"))
 
 ;; Others
 (remote_module module: (atom) @module)
@@ -108,6 +125,12 @@
 ;; callback
 (callback fun: (atom) @function)
 
+;; doc/moduledoc attributes (OTP 27+)
+(doc_attribute
+  (string) @comment.documentation)
+(moduledoc_attribute
+  (string) @comment.documentation)
+
 ;; wild attribute
 (wild_attribute name: (attr_name name: (atom) @keyword))
 
@@ -148,6 +171,7 @@
   "compile"
   "define"
   "div"
+  "doc"
   "elif"
   "else"
   "end"
@@ -163,6 +187,7 @@
   "include"
   "include_lib"
   "module"
+  "moduledoc"
   "of"
   "opaque"
   "optional_callbacks"
@@ -227,3 +252,17 @@
  "=:="
  "=/="
  ] @operator
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Binary type specifiers
+(bit_type_list
+  types: (atom) @type.builtin
+  (#any-of? @type.builtin
+    ;; Types
+    "integer" "float" "binary" "bytes" "bitstring" "bits"
+    ;; Unicode
+    "utf8" "utf16" "utf32"
+    ;; Signedness
+    "signed" "unsigned"
+    ;; Endianness
+    "big" "little" "native"))

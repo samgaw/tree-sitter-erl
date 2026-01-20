@@ -1,203 +1,144 @@
 ================================================================================
-doc attribute multiline sq string
+decimal integer
 ================================================================================
 
--doc "
-This is a test
-".
+42.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (integer))
 
 ================================================================================
-moduledoc attribute bool
+decimal integer with underscores
 ================================================================================
 
--moduledoc false.
+1_234_567_890.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (moduledoc_attribute
-    (atom)))
+  (integer))
 
 ================================================================================
-moduledoc triple quoted string
+negative integer
 ================================================================================
 
--moduledoc """
-  Moduledoc test module
-  """.
+-42.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (moduledoc_attribute
-    (string)))
+  (unary_op_expr
+    (integer)))
 
 ================================================================================
-doc sigil string S
+positive integer
 ================================================================================
--doc ~S"Doc test module".
+
++42.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (unary_op_expr
+    (integer)))
 
 ================================================================================
-doc sigil string B
+binary integer (base 2)
 ================================================================================
--doc ~B"Doc test module".
+
+2#101.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (integer))
 
 ================================================================================
-doc binary string
+binary integer with underscores
 ================================================================================
 
--doc <<"Doc","test","modul",$e>>.
+2#1010_1010.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (string))
-      (bin_element
-        (string))
-      (bin_element
-        (string))
-      (bin_element
-        (char)))))
+  (integer))
 
 ================================================================================
-doc binary utf8 string
+octal integer (base 8)
 ================================================================================
 
--doc <<"Doc test mödule"/utf8>>.
+8#765.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (string)
-        (bit_type_list
-          (atom))))))
+  (integer))
 
 ================================================================================
-doc binary string with macro
+octal integer with underscores
 ================================================================================
 
--doc <<?MODULE_STRING, "-Doc module">>.
+8#765_432.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (macro_call_expr
-          (var)))
-      (bin_element
-        (string)))))
+  (integer))
 
 ================================================================================
-doc macro and string concatenation
+decimal with explicit base
 ================================================================================
 
--doc ?MODULE_STRING "-" ?MODULE_STRING.
+10#123.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (concatables
-      (macro_call_expr
-        (var))
-      (string)
-      (macro_call_expr
-        (var)))))
+  (integer))
 
 ================================================================================
-doc macro and string concatenation
+hexadecimal integer (base 16)
 ================================================================================
 
--doc """
-     Sigil examples
-     """.
--spec f() -> ok.
-f() -> ok.
+16#1f2E.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string))
-  (spec
-    (atom)
-    (type_sig
-      (expr_args)
-      (atom)))
-  (fun_decl
-    (function_clause
-      (atom)
-      (expr_args)
-      (clause_body
-        (atom)))))
+  (integer))
 
 ================================================================================
-doc include file
+hexadecimal with underscores
 ================================================================================
 
--doc {file,"../../doc/src/info.md"}.
-f() -> ok.
+16#4865_316F_774F_6C64.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (tuple
-      (atom)
-      (string)))
-  (fun_decl
-    (function_clause
-      (atom)
-      (expr_args)
-      (clause_body
-        (atom)))))
+  (integer))
 
 ================================================================================
-doc attribute with parentheses
+base 36 integer
 ================================================================================
 
--doc("Documentation with parentheses").
+36#1234567890abcdefghijklmnopqrstuvwxyz.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (integer))
 
 ================================================================================
-moduledoc attribute with parentheses
+base 36 integer with underscores
 ================================================================================
 
--moduledoc(hidden).
+36#ABC_DEF_123.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (moduledoc_attribute
-    (atom)))
+  (integer))

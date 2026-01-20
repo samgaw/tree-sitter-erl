@@ -43,6 +43,9 @@
       ],
       "highlights": [
         "queries/highlights.scm"
+      ],
+      "tags": [
+        "queries/tags.scm"
       ]
     }
   ],

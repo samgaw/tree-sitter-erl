@@ -1,203 +1,131 @@
 ================================================================================
-doc attribute multiline sq string
+simple atom
 ================================================================================
 
--doc "
-This is a test
-".
+hello.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (atom))
 
 ================================================================================
-moduledoc attribute bool
+atom with underscore
 ================================================================================
 
--moduledoc false.
+phone_number.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (moduledoc_attribute
-    (atom)))
+  (atom))
 
 ================================================================================
-moduledoc triple quoted string
+atom with @ symbol
 ================================================================================
 
--moduledoc """
-  Moduledoc test module
-  """.
+bob123@best_place.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (moduledoc_attribute
-    (string)))
+  (atom))
 
 ================================================================================
-doc sigil string S
+quoted atom with spaces
 ================================================================================
--doc ~S"Doc test module".
+
+'phone number'.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (atom))
 
 ================================================================================
-doc sigil string B
+quoted atom with special characters
 ================================================================================
--doc ~B"Doc test module".
+
+'Hello World!'.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (atom))
 
 ================================================================================
-doc binary string
+quoted atom with escape sequence
 ================================================================================
 
--doc <<"Doc","test","modul",$e>>.
+'line\nbreak'.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (string))
-      (bin_element
-        (string))
-      (bin_element
-        (string))
-      (bin_element
-        (char)))))
+  (atom))
 
 ================================================================================
-doc binary utf8 string
+quoted atom with escaped quote
 ================================================================================
 
--doc <<"Doc test mödule"/utf8>>.
+'it\'s'.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (string)
-        (bit_type_list
-          (atom))))))
+  (atom))
 
 ================================================================================
-doc binary string with macro
+single character atom
 ================================================================================
 
--doc <<?MODULE_STRING, "-Doc module">>.
+a.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (macro_call_expr
-          (var)))
-      (bin_element
-        (string)))))
+  (atom))
 
 ================================================================================
-doc macro and string concatenation
+language constant true
 ================================================================================
 
--doc ?MODULE_STRING "-" ?MODULE_STRING.
+true.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (concatables
-      (macro_call_expr
-        (var))
-      (string)
-      (macro_call_expr
-        (var)))))
+  (atom))
 
 ================================================================================
-doc macro and string concatenation
+language constant false
 ================================================================================
 
--doc """
-     Sigil examples
-     """.
--spec f() -> ok.
-f() -> ok.
+false.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string))
-  (spec
-    (atom)
-    (type_sig
-      (expr_args)
-      (atom)))
-  (fun_decl
-    (function_clause
-      (atom)
-      (expr_args)
-      (clause_body
-        (atom)))))
+  (atom))
 
 ================================================================================
-doc include file
+language constant undefined
 ================================================================================
 
--doc {file,"../../doc/src/info.md"}.
-f() -> ok.
+undefined.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (tuple
-      (atom)
-      (string)))
-  (fun_decl
-    (function_clause
-      (atom)
-      (expr_args)
-      (clause_body
-        (atom)))))
+  (atom))
 
 ================================================================================
-doc attribute with parentheses
+capitalized quoted atom
 ================================================================================
 
--doc("Documentation with parentheses").
+'Monday'.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
-
-================================================================================
-moduledoc attribute with parentheses
-================================================================================
-
--moduledoc(hidden).
-
---------------------------------------------------------------------------------
-
-(source_file
-  (moduledoc_attribute
-    (atom)))
+  (atom))

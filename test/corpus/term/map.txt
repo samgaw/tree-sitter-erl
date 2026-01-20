@@ -1,203 +1,203 @@
 ================================================================================
-doc attribute multiline sq string
+empty map
 ================================================================================
 
--doc "
-This is a test
-".
+#{}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (map_expr))
 
 ================================================================================
-moduledoc attribute bool
+single entry map
 ================================================================================
 
--moduledoc false.
+#{name => "Alice"}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (moduledoc_attribute
-    (atom)))
+  (map_expr
+    (map_field
+      (atom)
+      (string))))
 
 ================================================================================
-moduledoc triple quoted string
+multiple entry map
 ================================================================================
 
--moduledoc """
-  Moduledoc test module
-  """.
+#{name => adam, age => 24, date => {july, 29}}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (moduledoc_attribute
-    (string)))
+  (map_expr
+    (map_field
+      (atom)
+      (atom))
+    (map_field
+      (atom)
+      (integer))
+    (map_field
+      (atom)
+      (tuple
+        (atom)
+        (integer)))))
 
 ================================================================================
-doc sigil string S
+map with integer keys
 ================================================================================
--doc ~S"Doc test module".
+
+#{1 => "one", 2 => "two"}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (map_expr
+    (map_field
+      (integer)
+      (string))
+    (map_field
+      (integer)
+      (string))))
 
 ================================================================================
-doc sigil string B
+map with tuple keys
 ================================================================================
--doc ~B"Doc test module".
+
+#{{x, y} => "coords", {a, b} => "pair"}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
+  (map_expr
+    (map_field
+      (tuple
+        (atom)
+        (atom))
+      (string))
+    (map_field
+      (tuple
+        (atom)
+        (atom))
+      (string))))
 
 ================================================================================
-doc binary string
+nested map
 ================================================================================
 
--doc <<"Doc","test","modul",$e>>.
+#{outer => #{inner => value}}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (string))
-      (bin_element
-        (string))
-      (bin_element
-        (string))
-      (bin_element
-        (char)))))
-
-================================================================================
-doc binary utf8 string
-================================================================================
-
--doc <<"Doc test mödule"/utf8>>.
-
---------------------------------------------------------------------------------
-
-(source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (string)
-        (bit_type_list
+  (map_expr
+    (map_field
+      (atom)
+      (map_expr
+        (map_field
+          (atom)
           (atom))))))
 
 ================================================================================
-doc binary string with macro
+map update syntax
 ================================================================================
 
--doc <<?MODULE_STRING, "-Doc module">>.
+Map#{key := value}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (binary
-      (bin_element
-        (macro_call_expr
-          (var)))
-      (bin_element
+  (map_expr_update
+    (var)
+    (map_field
+      (atom)
+      (atom))))
+
+================================================================================
+map update with multiple entries
+================================================================================
+
+Map#{a := 1, b := 2}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (map_expr_update
+    (var)
+    (map_field
+      (atom)
+      (integer))
+    (map_field
+      (atom)
+      (integer))))
+
+================================================================================
+map pattern match
+================================================================================
+
+#{name := Name} = #{name => "Bob"}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (match_expr
+    (map_expr
+      (map_field
+        (atom)
+        (var)))
+    (map_expr
+      (map_field
+        (atom)
         (string)))))
 
 ================================================================================
-doc macro and string concatenation
+map with mixed entry types
 ================================================================================
 
--doc ?MODULE_STRING "-" ?MODULE_STRING.
+#{a => 1, b := 2}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (concatables
-      (macro_call_expr
-        (var))
-      (string)
-      (macro_call_expr
-        (var)))))
-
-================================================================================
-doc macro and string concatenation
-================================================================================
-
--doc """
-     Sigil examples
-     """.
--spec f() -> ok.
-f() -> ok.
-
---------------------------------------------------------------------------------
-
-(source_file
-  (doc_attribute
-    (string))
-  (spec
-    (atom)
-    (type_sig
-      (expr_args)
-      (atom)))
-  (fun_decl
-    (function_clause
+  (map_expr
+    (map_field
       (atom)
-      (expr_args)
-      (clause_body
-        (atom)))))
-
-================================================================================
-doc include file
-================================================================================
-
--doc {file,"../../doc/src/info.md"}.
-f() -> ok.
-
---------------------------------------------------------------------------------
-
-(source_file
-  (doc_attribute
-    (tuple
+      (integer))
+    (map_field
       (atom)
-      (string)))
-  (fun_decl
-    (function_clause
+      (integer))))
+
+================================================================================
+map with list value
+================================================================================
+
+#{items => [1, 2, 3]}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (map_expr
+    (map_field
       (atom)
-      (expr_args)
-      (clause_body
-        (atom)))))
+      (list
+        (integer)
+        (integer)
+        (integer)))))
 
 ================================================================================
-doc attribute with parentheses
+map with binary key
 ================================================================================
 
--doc("Documentation with parentheses").
+#{<<"key">> => value}.
 
 --------------------------------------------------------------------------------
 
 (source_file
-  (doc_attribute
-    (string)))
-
-================================================================================
-moduledoc attribute with parentheses
-================================================================================
-
--moduledoc(hidden).
-
---------------------------------------------------------------------------------
-
-(source_file
-  (moduledoc_attribute
-    (atom)))
+  (map_expr
+    (map_field
+      (binary
+        (bin_element
+          (string)))
+      (atom))))

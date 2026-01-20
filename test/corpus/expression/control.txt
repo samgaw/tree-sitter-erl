@@ -1,0 +1,528 @@
+================================================================================
+if expression
+================================================================================
+
+if true -> ok end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (if_expr
+    (if_clause
+      (guard
+        (guard_clause
+          (atom)))
+      (clause_body
+        (atom)))))
+
+================================================================================
+if expression with multiple clauses
+================================================================================
+
+if
+    X > 0 -> positive;
+    X < 0 -> negative;
+    true -> zero
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (if_expr
+    (if_clause
+      (guard
+        (guard_clause
+          (binary_op_expr
+            (var)
+            (integer))))
+      (clause_body
+        (atom)))
+    (if_clause
+      (guard
+        (guard_clause
+          (binary_op_expr
+            (var)
+            (integer))))
+      (clause_body
+        (atom)))
+    (if_clause
+      (guard
+        (guard_clause
+          (atom)))
+      (clause_body
+        (atom)))))
+
+================================================================================
+case expression
+================================================================================
+
+case X of
+    ok -> success;
+    error -> failure
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (case_expr
+    (var)
+    (cr_clause
+      (atom)
+      (clause_body
+        (atom)))
+    (cr_clause
+      (atom)
+      (clause_body
+        (atom)))))
+
+================================================================================
+case expression with guards
+================================================================================
+
+case X of
+    N when N > 0 -> positive;
+    N when N < 0 -> negative;
+    _ -> zero
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (case_expr
+    (var)
+    (cr_clause
+      (var)
+      (guard
+        (guard_clause
+          (binary_op_expr
+            (var)
+            (integer))))
+      (clause_body
+        (atom)))
+    (cr_clause
+      (var)
+      (guard
+        (guard_clause
+          (binary_op_expr
+            (var)
+            (integer))))
+      (clause_body
+        (atom)))
+    (cr_clause
+      (var)
+      (clause_body
+        (atom)))))
+
+================================================================================
+case expression with pattern matching
+================================================================================
+
+case Result of
+    {ok, Value} -> Value;
+    {error, Reason} -> {error, Reason}
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (case_expr
+    (var)
+    (cr_clause
+      (tuple
+        (atom)
+        (var))
+      (clause_body
+        (var)))
+    (cr_clause
+      (tuple
+        (atom)
+        (var))
+      (clause_body
+        (tuple
+          (atom)
+          (var))))))
+
+================================================================================
+receive expression
+================================================================================
+
+receive
+    ok -> done
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (atom)
+      (clause_body
+        (atom)))))
+
+================================================================================
+receive expression with timeout
+================================================================================
+
+receive
+    Message -> process(Message)
+after 5000 ->
+    timeout
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (var)
+      (clause_body
+        (call
+          (atom)
+          (expr_args
+            (var)))))
+    (receive_after
+      (integer)
+      (clause_body
+        (atom)))))
+
+================================================================================
+receive expression with multiple patterns
+================================================================================
+
+receive
+    {ping, Pid} -> Pid ! pong;
+    {data, Data} -> handle(Data);
+    stop -> exit(normal)
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (tuple
+        (atom)
+        (var))
+      (clause_body
+        (binary_op_expr
+          (var)
+          (atom))))
+    (cr_clause
+      (tuple
+        (atom)
+        (var))
+      (clause_body
+        (call
+          (atom)
+          (expr_args
+            (var)))))
+    (cr_clause
+      (atom)
+      (clause_body
+        (call
+          (atom)
+          (expr_args
+            (atom)))))))
+
+================================================================================
+receive with only timeout
+================================================================================
+
+receive
+after 1000 ->
+    ok
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (receive_after
+      (integer)
+      (clause_body
+        (atom)))))
+
+================================================================================
+try expression
+================================================================================
+
+try
+    risky_operation()
+catch
+    _:_ -> error
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (try_expr
+    (call
+      (atom)
+      (expr_args))
+    (catch_clause
+      (try_class
+        (var))
+      (var)
+      (clause_body
+        (atom)))))
+
+================================================================================
+try expression with of
+================================================================================
+
+try risky_operation() of
+    ok -> success;
+    {ok, Value} -> Value
+catch
+    error:Reason -> {error, Reason}
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (try_expr
+    (call
+      (atom)
+      (expr_args))
+    (cr_clause
+      (atom)
+      (clause_body
+        (atom)))
+    (cr_clause
+      (tuple
+        (atom)
+        (var))
+      (clause_body
+        (var)))
+    (catch_clause
+      (try_class
+        (atom))
+      (var)
+      (clause_body
+        (tuple
+          (atom)
+          (var))))))
+
+================================================================================
+try expression with after
+================================================================================
+
+try
+    file:read(File)
+after
+    file:close(File)
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (try_expr
+    (call
+      (remote
+        (remote_module
+          (atom))
+        (atom))
+      (expr_args
+        (var)))
+    (try_after
+      (call
+        (remote
+          (remote_module
+            (atom))
+          (atom))
+        (expr_args
+          (var))))))
+
+================================================================================
+try expression with stack trace
+================================================================================
+
+try
+    dangerous()
+catch
+    error:Reason:Stack ->
+        {error, Reason, Stack}
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (try_expr
+    (call
+      (atom)
+      (expr_args))
+    (catch_clause
+      (try_class
+        (atom))
+      (var)
+      (try_stack
+        (var))
+      (clause_body
+        (tuple
+          (atom)
+          (var)
+          (var))))))
+
+================================================================================
+catch expression
+================================================================================
+
+catch dangerous().
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (catch_expr
+    (call
+      (atom)
+      (expr_args))))
+
+================================================================================
+begin-end block
+================================================================================
+
+begin
+    X = 1,
+    Y = 2,
+    X + Y
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (block_expr
+    (match_expr
+      (var)
+      (integer))
+    (match_expr
+      (var)
+      (integer))
+    (binary_op_expr
+      (var)
+      (var))))
+
+================================================================================
+maybe expression
+================================================================================
+
+maybe
+    {ok, A} ?= get_a(),
+    {ok, B} ?= get_b(A),
+    A + B
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (maybe_expr
+    (cond_match_expr
+      (tuple
+        (atom)
+        (var))
+      (call
+        (atom)
+        (expr_args)))
+    (cond_match_expr
+      (tuple
+        (atom)
+        (var))
+      (call
+        (atom)
+        (expr_args
+          (var))))
+    (binary_op_expr
+      (var)
+      (var))))
+
+================================================================================
+maybe expression with else
+================================================================================
+
+maybe
+    {ok, Value} ?= operation()
+else
+    {error, Reason} -> {error, Reason};
+    Other -> {unexpected, Other}
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (maybe_expr
+    (cond_match_expr
+      (tuple
+        (atom)
+        (var))
+      (call
+        (atom)
+        (expr_args)))
+    (cr_clause
+      (tuple
+        (atom)
+        (var))
+      (clause_body
+        (tuple
+          (atom)
+          (var))))
+    (cr_clause
+      (var)
+      (clause_body
+        (tuple
+          (atom)
+          (var))))))
+
+================================================================================
+nested control flow
+================================================================================
+
+case X of
+    N when is_integer(N) ->
+        if
+            N > 0 -> positive;
+            N < 0 -> negative;
+            true -> zero
+        end;
+    _ -> not_integer
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (case_expr
+    (var)
+    (cr_clause
+      (var)
+      (guard
+        (guard_clause
+          (call
+            (atom)
+            (expr_args
+              (var)))))
+      (clause_body
+        (if_expr
+          (if_clause
+            (guard
+              (guard_clause
+                (binary_op_expr
+                  (var)
+                  (integer))))
+            (clause_body
+              (atom)))
+          (if_clause
+            (guard
+              (guard_clause
+                (binary_op_expr
+                  (var)
+                  (integer))))
+            (clause_body
+              (atom)))
+          (if_clause
+            (guard
+              (guard_clause
+                (atom)))
+            (clause_body
+              (atom))))))
+    (cr_clause
+      (var)
+      (clause_body
+        (atom)))))
