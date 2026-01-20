@@ -4,7 +4,7 @@ package tree_sitter_erlang_test
 import (
 	"testing"
 
-	tree_sitter_erlang "github.com/samgaw/tree-sitter-erlang/bindings/go"
+	tree_sitter_erlang "github.com/samgaw/tree-sitter-erl/bindings/go"
 	tree_sitter "github.com/tree-sitter/go-tree-sitter"
 )
 

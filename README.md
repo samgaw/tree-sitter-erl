@@ -1,12 +1,11 @@
-# Tree Sitter Erlang
+# tree-sitter-erl
 
-This represents tree-sitter grammar used for the Erlang language in the
-ELP project.
+Erlang grammar for [tree-sitter](https://github.com/tree-sitter/tree-sitter).
 
-It started as a direct clone of
-https://github.com/AbstractMachinesLab/tree-sitter-erlang at
-[7b436e1ca50f0002f6765a9a2a00f6156b2cc881](https://github.com/AbstractMachinesLab/tree-sitter-erlang/commit/7b436e1ca50f0002f6765a9a2a00f6156b2cc881),
-but was later heavily modified for completeness.
+
+This is a fork of [whatsapp/tree-sitter-erlang](https://github.com/WhatsApp/tree-sitter-erlang/commit/f21023bbd6cd30cadbc793d80ae4d990d9be86fc), which is in turn a fork of [AbstractMachinesLab/tree-sitter-erlang](https://github.com/AbstractMachinesLab/tree-sitter-erlang/commit/7b436e1ca50f0002f6765a9a2a00f6156b2cc881).
+
+The main focus of this version is expanded [queries](./queries), broader test coverage and usable Go, Python & Node language bindings.
 
 ## Usage
 
@@ -22,13 +21,13 @@ Edit the `grammar.js` file and re-generate the code with:
 make gen
 ```
 
-Useful test command, parses `foo.erl` and opens a browser window to
-show the process, with pretty pictures of the generated AST.
+## Tests & Validation
 
+There is expanded test coverage, inspired by the [Elixir grammar](https://github.com/elixir-lang/tree-sitter-elixir/).
 ```
-npm run parse -- --debug-graph testdata/foo.erl
+make test
 ```
 
 ## License
 
-tree-sitter-erlang is [Apache licensed](./LICENSE).
+**tree-sitter-erl** is [Apache licensed](./LICENSE).

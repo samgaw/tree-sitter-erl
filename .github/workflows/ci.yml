@@ -43,4 +43,4 @@ jobs:
         with:
           python-version: '3.11'
       - run: pip install .
-      - run: python -c "import tree_sitter_erlang"
+      - run: python -c "import tree_sitter_erl"
