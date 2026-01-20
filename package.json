@@ -1,6 +1,6 @@
 {
-  "name": "tree-sitter-erlang",
-  "version": "0.15.0",
+  "name": "tree-sitter-erl",
+  "version": "0.16.0",
   "description": "Tree-sitter grammar for Erlang",
   "scripts": {
     "install": "node-gyp-build",

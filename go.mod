@@ -1,4 +1,4 @@
-module github.com/samgaw/tree-sitter-erlang
+module github.com/samgaw/tree-sitter-erl
 
 go 1.23
 
