@@ -22,6 +22,9 @@
             ],
             "highlights": "queries/highlights.scm",
             "injections": "queries/injections.scm",
+            "locals": "queries/locals.scm",
+            "indents": "queries/indents.scm",
+            "folds": "queries/folds.scm",
             "tags": "queries/tags.scm"
         }
     ]
