@@ -1,0 +1,245 @@
+================================================================================
+minimal module
+================================================================================
+
+-module(example).
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (module_attribute
+    (atom)))
+
+================================================================================
+module with export
+================================================================================
+
+-module(example).
+-export([foo/0]).
+
+foo() -> ok.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (module_attribute
+    (atom))
+  (export_attribute
+    (fa
+      (atom)
+      (arity
+        (integer))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args)
+      (clause_body
+        (atom)))))
+
+================================================================================
+module with multiple exports
+================================================================================
+
+-module(example).
+-export([foo/0, bar/1, baz/2]).
+
+foo() -> ok.
+bar(X) -> X.
+baz(X, Y) -> {X, Y}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (module_attribute
+    (atom))
+  (export_attribute
+    (fa
+      (atom)
+      (arity
+        (integer)))
+    (fa
+      (atom)
+      (arity
+        (integer)))
+    (fa
+      (atom)
+      (arity
+        (integer))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args)
+      (clause_body
+        (atom))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (var))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var)
+        (var))
+      (clause_body
+        (tuple
+          (var)
+          (var))))))
+
+================================================================================
+module with behaviour
+================================================================================
+
+-module(my_server).
+-behaviour(gen_server).
+-export([init/1, handle_call/3]).
+
+init(Args) -> {ok, Args}.
+
+handle_call(Request, From, State) -> {reply, ok, State}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (module_attribute
+    (atom))
+  (behaviour_attribute
+    (atom))
+  (export_attribute
+    (fa
+      (atom)
+      (arity
+        (integer)))
+    (fa
+      (atom)
+      (arity
+        (integer))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (tuple
+          (atom)
+          (var)))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var)
+        (var)
+        (var))
+      (clause_body
+        (tuple
+          (atom)
+          (atom)
+          (var))))))
+
+================================================================================
+module with import
+================================================================================
+
+-module(example).
+-import(lists, [map/2, filter/2]).
+
+foo(L) -> map(fun(X) -> X * 2 end, L).
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (module_attribute
+    (atom))
+  (import_attribute
+    (atom)
+    (fa
+      (atom)
+      (arity
+        (integer)))
+    (fa
+      (atom)
+      (arity
+        (integer))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (call
+          (atom)
+          (expr_args
+            (anonymous_fun
+              (fun_clause
+                (expr_args
+                  (var))
+                (clause_body
+                  (binary_op_expr
+                    (var)
+                    (integer)))))
+            (var)))))))
+
+================================================================================
+module with record
+================================================================================
+
+-module(example).
+-record(state, {name, count = 0}).
+
+new() -> #state{name = "default"}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (module_attribute
+    (atom))
+  (record_decl
+    (atom)
+    (record_field
+      (atom))
+    (record_field
+      (atom)
+      (field_expr
+        (integer))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args)
+      (clause_body
+        (record_expr
+          (record_name
+            (atom))
+          (record_field
+            (atom)
+            (field_expr
+              (string))))))))
+
+================================================================================
+module with doc attributes
+================================================================================
+
+-module(example).
+
+-moduledoc "Example module documentation".
+
+-doc "Returns ok".
+foo() -> ok.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (module_attribute
+    (atom))
+  (moduledoc_attribute
+    (string))
+  (doc_attribute
+    (string))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args)
+      (clause_body
+        (atom)))))

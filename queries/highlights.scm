@@ -13,7 +13,7 @@
 ;; limitations under the License.
 ;; ---------------------------------------------------------------------
 
-;; Based initially on the contents of https://github.com/WhatsApp/tree-sitter-erlang/issues/2 by @Wilfred
+;; Based initially on the contents of https://github.com/samgaw/tree-sitter-erlang/issues/2 by @Wilfred
 ;; and https://github.com/the-mikedavis/tree-sitter-erlang/blob/main/queries/highlights.scm
 ;;
 ;; The tests are also based on those in

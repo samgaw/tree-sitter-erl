@@ -1,0 +1,261 @@
+================================================================================
+simple spec
+================================================================================
+
+-spec foo() -> ok.
+foo() -> ok.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (spec
+    (atom)
+    (type_sig
+      (expr_args)
+      (atom)))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args)
+      (clause_body
+        (atom)))))
+
+================================================================================
+spec with arguments
+================================================================================
+
+-spec add(integer(), integer()) -> integer().
+add(A, B) -> A + B.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (spec
+    (atom)
+    (type_sig
+      (expr_args
+        (call
+          (atom)
+          (expr_args))
+        (call
+          (atom)
+          (expr_args)))
+      (call
+        (atom)
+        (expr_args))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var)
+        (var))
+      (clause_body
+        (binary_op_expr
+          (var)
+          (var))))))
+
+================================================================================
+spec with named arguments
+================================================================================
+
+-spec greet(Name :: string()) -> string().
+greet(Name) -> "Hello, " ++ Name.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (spec
+    (atom)
+    (type_sig
+      (expr_args
+        (ann_type
+          (ann_var
+            (var))
+          (call
+            (atom)
+            (expr_args))))
+      (call
+        (atom)
+        (expr_args))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (binary_op_expr
+          (string)
+          (var))))))
+
+================================================================================
+spec with union return type
+================================================================================
+
+-spec find(term()) -> {ok, term()} | error.
+find(X) -> {ok, X}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (spec
+    (atom)
+    (type_sig
+      (expr_args
+        (call
+          (atom)
+          (expr_args)))
+      (pipe
+        (tuple
+          (atom)
+          (call
+            (atom)
+            (expr_args)))
+        (atom))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (tuple
+          (atom)
+          (var))))))
+
+================================================================================
+spec with multiple clauses
+================================================================================
+
+-spec process(integer()) -> pos;
+             (atom()) -> neg.
+process(N) when is_integer(N) -> pos;
+process(A) when is_atom(A) -> neg.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (spec
+    (atom)
+    (type_sig
+      (expr_args
+        (call
+          (atom)
+          (expr_args)))
+      (atom))
+    (type_sig
+      (expr_args
+        (call
+          (atom)
+          (expr_args)))
+      (atom)))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (guard
+        (guard_clause
+          (call
+            (atom)
+            (expr_args
+              (var)))))
+      (clause_body
+        (atom))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (guard
+        (guard_clause
+          (call
+            (atom)
+            (expr_args
+              (var)))))
+      (clause_body
+        (atom)))))
+
+================================================================================
+type definition
+================================================================================
+
+-type name() :: string().
+-type age() :: non_neg_integer().
+-type person() :: #{name => name(), age => age()}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (type_alias
+    (type_name
+      (atom)
+      (var_args))
+    (call
+      (atom)
+      (expr_args)))
+  (type_alias
+    (type_name
+      (atom)
+      (var_args))
+    (call
+      (atom)
+      (expr_args)))
+  (type_alias
+    (type_name
+      (atom)
+      (var_args))
+    (map_expr
+      (map_field
+        (atom)
+        (call
+          (atom)
+          (expr_args)))
+      (map_field
+        (atom)
+        (call
+          (atom)
+          (expr_args))))))
+
+================================================================================
+opaque type
+================================================================================
+
+-opaque state() :: #state{}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (opaque
+    (type_name
+      (atom)
+      (var_args))
+    (record_expr
+      (record_name
+        (atom)))))
+
+================================================================================
+callback definition
+================================================================================
+
+-callback init(Args :: term()) -> {ok, State :: term()}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (callback
+    (atom)
+    (type_sig
+      (expr_args
+        (ann_type
+          (ann_var
+            (var))
+          (call
+            (atom)
+            (expr_args))))
+      (tuple
+        (atom)
+        (ann_type
+          (ann_var
+            (var))
+          (call
+            (atom)
+            (expr_args)))))))

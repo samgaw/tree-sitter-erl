@@ -1,3 +1,5 @@
+// @generated
+
 #ifndef TREE_SITTER_ARRAY_H_
 #define TREE_SITTER_ARRAY_H_
 

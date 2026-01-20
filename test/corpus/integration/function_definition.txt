@@ -1,0 +1,317 @@
+================================================================================
+simple function
+================================================================================
+
+foo() -> ok.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args)
+      (clause_body
+        (atom)))))
+
+================================================================================
+function with one argument
+================================================================================
+
+identity(X) -> X.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (var)))))
+
+================================================================================
+function with multiple arguments
+================================================================================
+
+add(A, B) -> A + B.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var)
+        (var))
+      (clause_body
+        (binary_op_expr
+          (var)
+          (var))))))
+
+================================================================================
+function with multiple clauses
+================================================================================
+
+factorial(0) -> 1;
+factorial(N) -> N * factorial(N - 1).
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (integer))
+      (clause_body
+        (integer))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (binary_op_expr
+          (var)
+          (call
+            (atom)
+            (expr_args
+              (binary_op_expr
+                (var)
+                (integer)))))))))
+
+================================================================================
+function with guards
+================================================================================
+
+abs(N) when N < 0 -> -N;
+abs(N) -> N.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (guard
+        (guard_clause
+          (binary_op_expr
+            (var)
+            (integer))))
+      (clause_body
+        (unary_op_expr
+          (var)))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (var)))))
+
+================================================================================
+function with multiple guard conditions
+================================================================================
+
+check(X) when is_integer(X), X > 0 -> positive;
+check(X) when is_integer(X), X < 0 -> negative;
+check(0) -> zero.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (guard
+        (guard_clause
+          (call
+            (atom)
+            (expr_args
+              (var)))
+          (binary_op_expr
+            (var)
+            (integer))))
+      (clause_body
+        (atom))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (guard
+        (guard_clause
+          (call
+            (atom)
+            (expr_args
+              (var)))
+          (binary_op_expr
+            (var)
+            (integer))))
+      (clause_body
+        (atom))))
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (integer))
+      (clause_body
+        (atom)))))
+
+================================================================================
+function with pattern matching
+================================================================================
+
+first([H | _]) -> H.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (list
+          (pipe
+            (var)
+            (var))))
+      (clause_body
+        (var)))))
+
+================================================================================
+function with tuple pattern
+================================================================================
+
+get_x({X, _}) -> X.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (tuple
+          (var)
+          (var)))
+      (clause_body
+        (var)))))
+
+================================================================================
+function with record pattern
+================================================================================
+
+get_name(#person{name = Name}) -> Name.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (record_expr
+          (record_name
+            (atom))
+          (record_field
+            (atom)
+            (field_expr
+              (var)))))
+      (clause_body
+        (var)))))
+
+================================================================================
+function with map pattern
+================================================================================
+
+get_key(#{key := Value}) -> Value.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (map_expr
+          (map_field
+            (atom)
+            (var))))
+      (clause_body
+        (var)))))
+
+================================================================================
+function with complex body
+================================================================================
+
+process(Data) ->
+    Validated = validate(Data),
+    Transformed = transform(Validated),
+    save(Transformed).
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (match_expr
+          (var)
+          (call
+            (atom)
+            (expr_args
+              (var))))
+        (match_expr
+          (var)
+          (call
+            (atom)
+            (expr_args
+              (var))))
+        (call
+          (atom)
+          (expr_args
+            (var)))))))
+
+================================================================================
+recursive function
+================================================================================
+
+loop(State) ->
+    receive
+        {update, NewState} -> loop(NewState);
+        stop -> ok
+    end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (fun_decl
+    (function_clause
+      (atom)
+      (expr_args
+        (var))
+      (clause_body
+        (receive_expr
+          (cr_clause
+            (tuple
+              (atom)
+              (var))
+            (clause_body
+              (call
+                (atom)
+                (expr_args
+                  (var)))))
+          (cr_clause
+            (atom)
+            (clause_body
+              (atom))))))))

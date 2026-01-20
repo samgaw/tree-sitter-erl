@@ -1,0 +1,290 @@
+================================================================================
+simple list comprehension
+================================================================================
+
+[X || X <- [1, 2, 3]].
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_comprehension
+    (var)
+    (lc_exprs
+      (lc_or_zc_expr
+        (generator
+          (var)
+          (list
+            (integer)
+            (integer)
+            (integer)))))))
+
+================================================================================
+list comprehension with expression
+================================================================================
+
+[X * 2 || X <- List].
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_comprehension
+    (binary_op_expr
+      (var)
+      (integer))
+    (lc_exprs
+      (lc_or_zc_expr
+        (generator
+          (var)
+          (var))))))
+
+================================================================================
+list comprehension with filter
+================================================================================
+
+[X || X <- [1, 2, 3, 4], X > 2].
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_comprehension
+    (var)
+    (lc_exprs
+      (lc_or_zc_expr
+        (generator
+          (var)
+          (list
+            (integer)
+            (integer)
+            (integer)
+            (integer))))
+      (lc_or_zc_expr
+        (binary_op_expr
+          (var)
+          (integer))))))
+
+================================================================================
+list comprehension with multiple generators
+================================================================================
+
+[{X, Y} || X <- [1, 2], Y <- [a, b]].
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_comprehension
+    (tuple
+      (var)
+      (var))
+    (lc_exprs
+      (lc_or_zc_expr
+        (generator
+          (var)
+          (list
+            (integer)
+            (integer))))
+      (lc_or_zc_expr
+        (generator
+          (var)
+          (list
+            (atom)
+            (atom)))))))
+
+================================================================================
+list comprehension with pattern
+================================================================================
+
+[X || {ok, X} <- Results].
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_comprehension
+    (var)
+    (lc_exprs
+      (lc_or_zc_expr
+        (generator
+          (tuple
+            (atom)
+            (var))
+          (var))))))
+
+================================================================================
+binary comprehension simple
+================================================================================
+
+<< <<X>> || X <- [1, 2, 3] >>.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_comprehension
+    (binary
+      (bin_element
+        (var)))
+    (lc_exprs
+      (lc_or_zc_expr
+        (generator
+          (var)
+          (list
+            (integer)
+            (integer)
+            (integer)))))))
+
+================================================================================
+binary comprehension with binary generator
+================================================================================
+
+<< <<X>> || <<X>> <= Bin >>.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_comprehension
+    (binary
+      (bin_element
+        (var)))
+    (lc_exprs
+      (lc_or_zc_expr
+        (b_generator
+          (binary
+            (bin_element
+              (var)))
+          (var))))))
+
+================================================================================
+binary comprehension with filter
+================================================================================
+
+<< <<X>> || <<X>> <= Bin, X > 0 >>.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (binary_comprehension
+    (binary
+      (bin_element
+        (var)))
+    (lc_exprs
+      (lc_or_zc_expr
+        (b_generator
+          (binary
+            (bin_element
+              (var)))
+          (var)))
+      (lc_or_zc_expr
+        (binary_op_expr
+          (var)
+          (integer))))))
+
+================================================================================
+map comprehension simple
+================================================================================
+
+#{K => V || K := V <- Map}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (map_comprehension
+    (map_field
+      (var)
+      (var))
+    (lc_exprs
+      (lc_or_zc_expr
+        (map_generator
+          (map_field
+            (var)
+            (var))
+          (var))))))
+
+================================================================================
+map comprehension with transformation
+================================================================================
+
+#{K => V * 2 || K := V <- Map}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (map_comprehension
+    (map_field
+      (var)
+      (binary_op_expr
+        (var)
+        (integer)))
+    (lc_exprs
+      (lc_or_zc_expr
+        (map_generator
+          (map_field
+            (var)
+            (var))
+          (var))))))
+
+================================================================================
+map comprehension with filter
+================================================================================
+
+#{K => V || K := V <- Map, V > 0}.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (map_comprehension
+    (map_field
+      (var)
+      (var))
+    (lc_exprs
+      (lc_or_zc_expr
+        (map_generator
+          (map_field
+            (var)
+            (var))
+          (var)))
+      (lc_or_zc_expr
+        (binary_op_expr
+          (var)
+          (integer))))))
+
+================================================================================
+list comprehension from map
+================================================================================
+
+[{K, V} || K := V <- Map].
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_comprehension
+    (tuple
+      (var)
+      (var))
+    (lc_exprs
+      (lc_or_zc_expr
+        (map_generator
+          (map_field
+            (var)
+            (var))
+          (var))))))
+
+================================================================================
+nested comprehension
+================================================================================
+
+[[Y || Y <- X] || X <- Lists].
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (list_comprehension
+    (list_comprehension
+      (var)
+      (lc_exprs
+        (lc_or_zc_expr
+          (generator
+            (var)
+            (var)))))
+    (lc_exprs
+      (lc_or_zc_expr
+        (generator
+          (var)
+          (var))))))

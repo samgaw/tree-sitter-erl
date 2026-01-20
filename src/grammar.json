@@ -7229,7 +7229,9 @@
       "_macro_body_expr"
     ]
   ],
-  "precedences": [],
+  "precedences": [
+
+  ],
   "externals": [
     {
       "type": "SYMBOL",
@@ -7275,5 +7277,7 @@
     "_desc",
     "_string_like"
   ],
-  "reserved": {}
+  "reserved": {
+  },
+  "@generated": true
 }
