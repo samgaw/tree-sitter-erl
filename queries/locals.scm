@@ -1,6 +1,6 @@
 ; Scopes - structures that introduce new variable scopes
 (fun_decl) @local.scope
-(fun_expr) @local.scope
+(anonymous_fun) @local.scope
 (case_expr) @local.scope
 (receive_expr) @local.scope
 (try_expr) @local.scope

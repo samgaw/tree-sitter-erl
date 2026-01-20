@@ -10,6 +10,14 @@
   },
   "author": "Sam Gaw",
   "license": "Apache-2.0",
+  "keywords": [
+    "tree-sitter",
+    "parser",
+    "erlang",
+    "syntax",
+    "highlighting",
+    "otp"
+  ],
   "main": "bindings/node",
   "types": "bindings/node",
   "dependencies": {

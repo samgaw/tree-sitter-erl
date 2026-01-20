@@ -6,8 +6,8 @@
 (if_expr) @fold
 (receive_expr) @fold
 (try_expr) @fold
-(fun_expr) @fold
-(begin_end_expr) @fold
+(anonymous_fun) @fold
+(block_expr) @fold
 
 ; Attributes with content
 (record_decl) @fold

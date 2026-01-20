@@ -6,8 +6,8 @@
 (if_expr) @indent
 (receive_expr) @indent
 (try_expr) @indent
-(fun_expr) @indent
-(begin_end_expr) @indent
+(anonymous_fun) @indent
+(block_expr) @indent
 
 ; Dedent on end keywords
 "end" @dedent
