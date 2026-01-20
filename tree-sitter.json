@@ -1,0 +1,28 @@
+{
+    "metadata": {
+        "version": "0.15.0",
+        "license": "Apache-2.0",
+        "description": "Tree-sitter grammar for Erlang",
+        "authors": [{"name": "Sam Gaw"}],
+        "links": {
+            "repository": "https://github.com/samgaw/tree-sitter-erlang"
+        }
+    },
+    "grammars": [
+        {
+            "name": "erlang",
+            "scope": "source.erlang",
+            "file-types": [
+                "erl",
+                "hrl",
+                "app.src",
+                "app",
+                "escript",
+                "rebar.config"
+            ],
+            "highlights": "queries/highlights.scm",
+            "injections": "queries/injections.scm",
+            "tags": "queries/tags.scm"
+        }
+    ]
+}

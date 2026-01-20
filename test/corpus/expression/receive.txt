@@ -1,0 +1,248 @@
+================================================================================
+simple receive
+================================================================================
+
+receive X -> X end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (var)
+      (clause_body
+        (var)))))
+
+================================================================================
+receive with atom pattern
+================================================================================
+
+receive ok -> done end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (atom)
+      (clause_body
+        (atom)))))
+
+================================================================================
+receive with multiple clauses
+================================================================================
+
+receive
+    {ping, Pid} -> Pid ! pong;
+    {data, Data} -> process(Data);
+    stop -> exit(normal)
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (tuple
+        (atom)
+        (var))
+      (clause_body
+        (binary_op_expr
+          (var)
+          (atom))))
+    (cr_clause
+      (tuple
+        (atom)
+        (var))
+      (clause_body
+        (call
+          (atom)
+          (expr_args
+            (var)))))
+    (cr_clause
+      (atom)
+      (clause_body
+        (call
+          (atom)
+          (expr_args
+            (atom)))))))
+
+================================================================================
+receive with timeout
+================================================================================
+
+receive
+    Msg -> handle(Msg)
+after 5000 ->
+    timeout
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (var)
+      (clause_body
+        (call
+          (atom)
+          (expr_args
+            (var)))))
+    (receive_after
+      (integer)
+      (clause_body
+        (atom)))))
+
+================================================================================
+receive with zero timeout
+================================================================================
+
+receive
+    Msg -> Msg
+after 0 ->
+    no_message
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (var)
+      (clause_body
+        (var)))
+    (receive_after
+      (integer)
+      (clause_body
+        (atom)))))
+
+================================================================================
+receive with infinity timeout
+================================================================================
+
+receive
+    Msg -> Msg
+after infinity ->
+    never
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (var)
+      (clause_body
+        (var)))
+    (receive_after
+      (atom)
+      (clause_body
+        (atom)))))
+
+================================================================================
+receive with guard
+================================================================================
+
+receive
+    N when is_integer(N) -> N * 2;
+    _ -> error
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (var)
+      (guard
+        (guard_clause
+          (call
+            (atom)
+            (expr_args
+              (var)))))
+      (clause_body
+        (binary_op_expr
+          (var)
+          (integer))))
+    (cr_clause
+      (var)
+      (clause_body
+        (atom)))))
+
+================================================================================
+receive only timeout
+================================================================================
+
+receive
+after 1000 ->
+    ok
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (receive_after
+      (integer)
+      (clause_body
+        (atom)))))
+
+================================================================================
+receive with complex body
+================================================================================
+
+receive
+    {request, From, Data} ->
+        Result = process(Data),
+        From ! {reply, Result},
+        loop()
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (tuple
+        (atom)
+        (var)
+        (var))
+      (clause_body
+        (match_expr
+          (var)
+          (call
+            (atom)
+            (expr_args
+              (var))))
+        (binary_op_expr
+          (var)
+          (tuple
+            (atom)
+            (var)))
+        (call
+          (atom)
+          (expr_args))))))
+
+================================================================================
+nested receive
+================================================================================
+
+receive
+    start ->
+        receive
+            stop -> done
+        end
+end.
+
+--------------------------------------------------------------------------------
+
+(source_file
+  (receive_expr
+    (cr_clause
+      (atom)
+      (clause_body
+        (receive_expr
+          (cr_clause
+            (atom)
+            (clause_body
+              (atom))))))))

@@ -4,8 +4,8 @@ package tree_sitter_erlang_test
 import (
 	"testing"
 
+	tree_sitter_erlang "github.com/samgaw/tree-sitter-erlang/bindings/go"
 	tree_sitter "github.com/tree-sitter/go-tree-sitter"
-	tree_sitter_erlang "github.com/tree-sitter/tree-sitter-erlang/bindings/go"
 )
 
 func TestCanLoadGrammar(t *testing.T) {
